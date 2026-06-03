@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3年次 科目選択ナビ</title>
+  <meta name="description" content="3年次の科目選択を、志望型・履修モデル・制約条件に沿って確認するための試作ページです。" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <p class="site-label">50期生 第3学年科目選択用</p>
+      <h1>3年次 科目選択ナビ</h1>
+      <p class="lead">
+        志望型を選ぶと、基本の履修モデルと変更可能な選択肢が表示されます。
+      </p>
+      <p class="small-note">
+        ※このページは確認・相談用の試作です。最終決定は必ず「科目選択のしおり」、担任、教科担当、進路資料で確認してください。
+      </p>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="notice-card" aria-labelledby="important-title">
+      <h2 id="important-title">重要事項</h2>
+      <ul id="global-notes" class="note-list">
+        <li>3年次は必修10単位に加え、自由選択科目17〜23単位を選択します。</li>
+        <li>選択した科目は卒業認定の基準となり、年度途中で履修放棄することはできません。</li>
+        <li>本調査票の最終締切後、および1月以降の最終確認時の変更は受け付けられません。</li>
+      </ul>
+    </section>
+
+    <section class="step-card" aria-labelledby="profile-title">
+      <div class="step-heading">
+        <span class="step-number">1</span>
+        <div>
+          <h2 id="profile-title">志望型を選択</h2>
+          <p>まず、現時点で最も近い進路型を選んでください。</p>
+        </div>
+      </div>
+
+      <div id="profile-list" class="profile-grid" aria-live="polite">
+        <!-- app.js が志望型カードを生成します -->
+      </div>
+    </section>
+
+    <section class="step-card" aria-labelledby="model-title">
+      <div class="step-heading">
+        <span class="step-number">2</span>
+        <div>
+          <h2 id="model-title">履修モデル</h2>
+          <p>選択した志望型に応じた基本モデルを表示します。</p>
+        </div>
+      </div>
+
+      <div id="model-summary" class="model-summary empty-state">
+        志望型を選択すると、ここに履修モデルが表示されます。
+      </div>
+    </section>
+
+    <section class="step-card" aria-labelledby="custom-title">
+      <div class="step-heading">
+        <span class="step-number">3</span>
+        <div>
+          <h2 id="custom-title">変更可能な科目</h2>
+          <p>モデル内で選択可能な部分だけを調整できます。</p>
+        </div>
+      </div>
+
+      <div id="custom-options" class="custom-options empty-state">
+        志望型を選択すると、変更可能な科目群が表示されます。
+      </div>
+    </section>
+
+    <section class="step-card" aria-labelledby="result-title">
+      <div class="step-heading">
+        <span class="step-number">4</span>
+        <div>
+          <h2 id="result-title">選択結果</h2>
+          <p>選択科目・単位数・合計単位を確認します。</p>
+        </div>
+      </div>
+
+      <div class="summary-layout">
+        <div id="unit-summary" class="unit-summary empty-state">
+          単位数はここに表示されます。
+        </div>
+
+        <div id="selected-courses" class="selected-courses empty-state">
+          選択科目はここに表示されます。
+        </div>
+      </div>
+    </section>
+
+    <section class="step-card" aria-labelledby="message-title">
+      <div class="step-heading">
+        <span class="step-number">5</span>
+        <div>
+          <h2 id="message-title">エラー・注意事項</h2>
+          <p>同時選択不可、セット履修、事前相談、自学事項を確認します。</p>
+        </div>
+      </div>
+
+      <div class="message-layout">
+        <section class="message-box message-box--error" aria-labelledby="errors-title">
+          <h3 id="errors-title">エラー</h3>
+          <div id="errors" class="message-list empty-state">現在、エラーはありません。</div>
+        </section>
+
+        <section class="message-box message-box--warning" aria-labelledby="warnings-title">
+          <h3 id="warnings-title">注意</h3>
+          <div id="warnings" class="message-list empty-state">注意事項はここに表示されます。</div>
+        </section>
+
+        <section class="message-box message-box--info" aria-labelledby="infos-title">
+          <h3 id="infos-title">補足</h3>
+          <div id="infos" class="message-list empty-state">補足情報はここに表示されます。</div>
+        </section>
+      </div>
+    </section>
+
+    <section class="step-card print-area" aria-labelledby="print-title">
+      <div class="step-heading">
+        <span class="step-number">6</span>
+        <div>
+          <h2 id="print-title">確認シート</h2>
+          <p>面談・保護者確認用に印刷できます。</p>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button id="print-button" type="button" class="primary-button">
+          確認シートを印刷する
+        </button>
+        <button id="reset-button" type="button" class="secondary-button">
+          選択をリセット
+        </button>
+      </div>
+
+      <div id="print-preview" class="print-preview empty-state">
+        志望型を選択すると、印刷用の確認内容が表示されます。
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      このページは科目選択の検討を支援するための試作です。最終的な履修可否は、開講状況・時間割編成・正式な調査票に基づきます。
+    </p>
+  </footer>
+
+  <noscript>
+    <div class="noscript-message">
+      このページを利用するにはJavaScriptを有効にしてください。
+    </div>
+  </noscript>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
