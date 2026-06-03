@@ -22,6 +22,13 @@
     </div>
   </header>
 
+  <nav class="mobile-anchor-nav" aria-label="ページ内メニュー">
+    <a href="#profile-title">志望型</a>
+    <a href="#custom-title">選択</a>
+    <a href="#result-title">結果</a>
+    <a href="#message-title">注意</a>
+  </nav>
+
   <main class="page">
     <section class="notice-card" aria-labelledby="important-title">
       <h2 id="important-title">重要事項</h2>
@@ -144,6 +151,14 @@
       </div>
     </section>
   </main>
+
+  <aside id="mobile-status" class="mobile-status" aria-live="polite">
+    <div class="mobile-status__main">
+      <span id="mobile-status-profile">未選択</span>
+      <strong id="mobile-status-units">自由選択 0単位</strong>
+    </div>
+    <a href="#message-title" id="mobile-status-alert" class="mobile-status__alert">確認</a>
+  </aside>
 
   <footer class="site-footer">
     <p>

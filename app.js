@@ -53,7 +53,10 @@
     infos: $("#infos"),
     printPreview: $("#print-preview"),
     printButton: $("#print-button"),
-    resetButton: $("#reset-button")
+    resetButton: $("#reset-button"),
+    mobileStatusProfile: $("#mobile-status-profile"),
+    mobileStatusUnits: $("#mobile-status-units"),
+    mobileStatusAlert: $("#mobile-status-alert")
   };
 
   function escapeHtml(value) {
@@ -63,6 +66,13 @@
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
+  }
+
+  function cssEscape(value) {
+    if (window.CSS && typeof window.CSS.escape === "function") {
+      return window.CSS.escape(value);
+    }
+    return String(value).replace(/"/g, "\\\"");
   }
 
   function getCourse(id) {
@@ -507,7 +517,7 @@
       input.addEventListener("change", () => {
         const groupId = input.dataset.groupId;
         const selected = Array.from(
-          elements.customOptions.querySelectorAll(`[data-group-id="${CSS.escape(groupId)}"][data-option-kind="choose-exactly"]:checked`)
+          elements.customOptions.querySelectorAll(`[data-group-id="${cssEscape(groupId)}"][data-option-kind="choose-exactly"]:checked`)
         ).map((checkedInput) => checkedInput.value);
 
         state.groupSelections[groupId] = selected;
@@ -552,6 +562,7 @@
       elements.selectedCourses.textContent = "選択科目はここに表示されます。";
       renderMessages([], [], []);
       renderPrintPreview();
+      updateMobileStatus(null, 0, { errors: [], warnings: [], infos: [] });
       return;
     }
 
@@ -589,6 +600,7 @@
     const messages = validateSelection(selectedIds);
     renderMessages(messages.errors, messages.warnings, messages.infos);
     renderPrintPreview(selectedIds, messages, electiveCredits, totalCredits);
+    updateMobileStatus(model, electiveCredits, messages);
   }
 
   function renderSelectedCourseList(selectedIds) {
@@ -789,6 +801,37 @@
   function validateModelWarnings(model, warnings, infos) {
     (model.warnings || []).forEach((message) => warnings.push(message));
     (model.selfStudy || []).forEach((message) => infos.push(`自学・講習・質問対応：${message}`));
+  }
+
+  function updateMobileStatus(model, electiveCredits, messages) {
+    if (!elements.mobileStatusProfile || !elements.mobileStatusUnits || !elements.mobileStatusAlert) {
+      return;
+    }
+
+    if (!model) {
+      elements.mobileStatusProfile.textContent = "未選択";
+      elements.mobileStatusUnits.textContent = "自由選択 0単位";
+      elements.mobileStatusAlert.textContent = "確認";
+      elements.mobileStatusAlert.className = "mobile-status__alert";
+      return;
+    }
+
+    elements.mobileStatusProfile.textContent = model.name;
+    elements.mobileStatusUnits.textContent = `自由選択 ${electiveCredits}単位`;
+
+    const errorCount = messages && messages.errors ? messages.errors.length : 0;
+    const warningCount = messages && messages.warnings ? messages.warnings.length : 0;
+
+    if (errorCount > 0) {
+      elements.mobileStatusAlert.textContent = `エラー ${errorCount}`;
+      elements.mobileStatusAlert.className = "mobile-status__alert is-error";
+    } else if (warningCount > 0) {
+      elements.mobileStatusAlert.textContent = `注意 ${warningCount}`;
+      elements.mobileStatusAlert.className = "mobile-status__alert is-warning";
+    } else {
+      elements.mobileStatusAlert.textContent = "OK";
+      elements.mobileStatusAlert.className = "mobile-status__alert is-ok";
+    }
   }
 
   function renderMessages(errors, warnings, infos) {
