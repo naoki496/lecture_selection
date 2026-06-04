@@ -254,14 +254,44 @@
     };
   }
 
-  function getOutsideEnglishInquiryGroup() {
+  function shouldShowEnglishInquiry(model) {
+    if (!model) return false;
+
+    const scienceProfileIds = ["science_tokyo_kyoto", "science_national", "science_private"];
+    if (scienceProfileIds.includes(model.profileId)) {
+      return false;
+    }
+
+    if ((model.lockedOut || []).includes("english_inquiry")) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function getOutsideEnglishGroup(model) {
+    if (!shouldShowEnglishInquiry(model)) {
+      return null;
+    }
+
     return {
-      id: "outside_english_inquiry",
-      label: "モデル外の任意選択②：英語・探究",
-      type: "choose_exactly",
+      id: "outside_english",
+      label: "モデル外の任意選択②：英語系",
+      type: "single",
       required: false,
-      options: ["english_inquiry", "inquiry"],
-      note: "英語探究演習・課題探究演習は、必要に応じて追加検討するモデル外の任意選択です。英語探究演習は数学演習βと同時選択不可、課題探究演習は古典演習γと同時選択不可です。課題探究演習は事前相談が必要です。"
+      options: ["english_inquiry"],
+      note: "英語探究演習は文系・文理型向けの講座です。数学演習βとは同時選択できません。看護系で選ぶ場合は、志望校の英語試験内容を確認してください。"
+    };
+  }
+
+  function getSpecialInquiryGroup() {
+    return {
+      id: "special_inquiry",
+      label: "個別相談が必要な特例選択",
+      type: "single",
+      required: false,
+      options: ["inquiry"],
+      note: "課題探究演習は、推薦型選抜・総合型選抜で高度な探究活動を必要とする場合の特例的な選択です。事前相談が必要です。古典演習γとは同時選択できません。"
     };
   }
 
@@ -286,7 +316,13 @@
     });
 
     sections.push(renderGroup(getOutsidePeArtsGroup()));
-    sections.push(renderGroup(getOutsideEnglishInquiryGroup()));
+
+    const outsideEnglishGroup = getOutsideEnglishGroup(model);
+    if (outsideEnglishGroup) {
+      sections.push(renderGroup(outsideEnglishGroup));
+    }
+
+    sections.push(renderGroup(getSpecialInquiryGroup()));
 
     if (sections.length === 0) {
       elements.customOptions.innerHTML = `<div class="empty-state">このモデルで変更可能な科目はありません。</div>`;

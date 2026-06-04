@@ -1612,3 +1612,167 @@ a {
     line-height: 1.25;
   }
 }
+
+
+/* v8: 民間公式UI。PDF確認シートは従来の公的UI寄りを維持 */
+@media screen {
+  :root {
+    --color-bg: #f3f7fb;
+    --color-surface-soft: #f7fbff;
+    --color-text: #111827;
+    --color-muted: #64748b;
+    --color-border: #d7e3f0;
+    --color-primary: #0f6b8f;
+    --color-primary-dark: #0b4f71;
+    --color-primary-soft: #e6f6fb;
+    --shadow-card: 0 18px 42px rgba(15, 23, 42, 0.09);
+    --shadow-soft: 0 12px 26px rgba(15, 23, 42, 0.08);
+    --radius-lg: 22px;
+    --radius-md: 15px;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 10% -10%, rgba(14, 165, 233, 0.18), transparent 34rem),
+      radial-gradient(circle at 95% 5%, rgba(20, 184, 166, 0.14), transparent 30rem),
+      linear-gradient(180deg, #f8fbff 0%, var(--color-bg) 100%);
+  }
+
+  .site-header {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 82% 20%, rgba(255, 255, 255, 0.23), transparent 18rem),
+      linear-gradient(135deg, #08324a 0%, #0f6b8f 56%, #16a3b8 100%);
+  }
+
+  .site-header::after {
+    content: "";
+    position: absolute;
+    right: -5rem;
+    bottom: -7rem;
+    width: 22rem;
+    height: 22rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .site-header__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .site-label {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.32);
+    font-weight: 800;
+  }
+
+  .site-label::before {
+    content: "COURSE SELECTOR";
+    display: inline-flex;
+    margin-right: 0.55rem;
+    padding-right: 0.55rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.35);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    opacity: 0.9;
+  }
+
+  .notice-card,
+  .step-card {
+    border: 1px solid rgba(215, 227, 240, 0.92);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-card);
+  }
+
+  .notice-card {
+    border-left: 6px solid #14a3b8;
+  }
+
+  .step-heading h2 {
+    letter-spacing: 0.01em;
+  }
+
+  .step-number {
+    background: linear-gradient(135deg, #0f6b8f 0%, #14a3b8 100%);
+    box-shadow: 0 10px 24px rgba(15, 107, 143, 0.24);
+  }
+
+  .profile-card {
+    border: 1px solid rgba(215, 227, 240, 0.95);
+    background:
+      linear-gradient(180deg, #ffffff 0%, #f9fcff 100%);
+  }
+
+  .profile-card:hover,
+  .profile-card:focus-visible {
+    border-color: rgba(15, 107, 143, 0.52);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.11);
+  }
+
+  .profile-card.is-active {
+    border-color: #0f6b8f;
+    background:
+      linear-gradient(180deg, #ffffff 0%, #eaf9fc 100%);
+    box-shadow: 0 0 0 4px rgba(20, 163, 184, 0.16), 0 16px 34px rgba(15, 23, 42, 0.10);
+  }
+
+  .profile-card__category {
+    background: #e6f6fb;
+    color: #0b4f71;
+  }
+
+  .profile-card__title {
+    font-size: 1.03rem;
+  }
+
+  .group-card {
+    border-color: rgba(215, 227, 240, 0.95);
+    background:
+      linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  }
+
+  .group-card[data-group-id="outside_pe_arts"],
+  .group-card[data-group-id="outside_english"],
+  .group-card[data-group-id="special_inquiry"] {
+    border-style: solid;
+    border-left: 5px solid #14a3b8;
+    background: #fcfeff;
+  }
+
+  .group-card[data-group-id="special_inquiry"] {
+    border-left-color: var(--color-warning);
+  }
+
+  .option-item {
+    background: #f8fbff;
+  }
+
+  .option-item:hover {
+    border-color: rgba(20, 163, 184, 0.42);
+  }
+
+  .primary-button {
+    border-color: #0f6b8f;
+    background: linear-gradient(135deg, #0f6b8f 0%, #14a3b8 100%);
+    box-shadow: 0 12px 26px rgba(15, 107, 143, 0.28);
+  }
+
+  .primary-button:hover,
+  .primary-button:focus-visible {
+    background: linear-gradient(135deg, #0b4f71 0%, #0f8aa3 100%);
+  }
+
+  .mobile-anchor-nav a {
+    color: #0b4f71;
+  }
+
+  .mobile-status {
+    border-color: rgba(20, 163, 184, 0.28);
+  }
+
+  .mobile-status__alert {
+    background: linear-gradient(135deg, #0f6b8f 0%, #14a3b8 100%);
+  }
+}
