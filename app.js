@@ -926,7 +926,7 @@
 
     if (!model) {
       elements.printPreview.className = "print-preview empty-state";
-      elements.printPreview.textContent = "志望型を選択すると、印刷用の確認内容が表示されます。";
+      elements.printPreview.textContent = "志望型を選択すると、PDF用の確認内容が表示されます。";
       return;
     }
 
@@ -935,36 +935,133 @@
     const infos = messages ? messages.infos : [];
     const elective = electiveCredits !== null ? electiveCredits : sumCredits(selectedIds);
     const total = totalCredits !== null ? totalCredits : CONFIG.requiredCredits + elective;
+    const judgement = errors.length > 0 ? "要修正" : "確認可";
 
     elements.printPreview.className = "print-preview";
     elements.printPreview.innerHTML = `
-      <h3>科目選択 確認シート</h3>
-      <dl>
-        <dt>志望型</dt>
-        <dd>${escapeHtml(model.name)}</dd>
-        <dt>必修科目</dt>
-        <dd>${CONFIG.requiredCredits}単位</dd>
-        <dt>自由選択科目</dt>
-        <dd>${elective}単位</dd>
-        <dt>合計</dt>
-        <dd>${total}単位</dd>
-      </dl>
+      <article class="pdf-sheet">
+        <header class="pdf-sheet__header">
+          <div>
+            <p class="pdf-sheet__label">50期生 第3学年科目選択用</p>
+            <h3>3年次 科目選択確認シート</h3>
+          </div>
+          <div class="pdf-sheet__status ${errors.length > 0 ? "is-error" : "is-ok"}">${judgement}</div>
+        </header>
 
-      <h4>必修科目</h4>
-      ${renderSimpleRequiredCourseList()}
+        <dl class="pdf-meta-grid">
+          <div>
+            <dt>志望型</dt>
+            <dd>${escapeHtml(model.name)}</dd>
+          </div>
+          <div>
+            <dt>必修科目</dt>
+            <dd>${CONFIG.requiredCredits}単位</dd>
+          </div>
+          <div>
+            <dt>自由選択科目</dt>
+            <dd>${elective}単位</dd>
+          </div>
+          <div>
+            <dt>合計</dt>
+            <dd>${total}単位</dd>
+          </div>
+        </dl>
 
-      <h4>自由選択科目</h4>
-      ${renderSimpleCourseList(selectedIds)}
+        <section class="pdf-section">
+          <h4>必修科目</h4>
+          ${renderPdfRequiredCourses()}
+        </section>
 
-      <h4>確認事項</h4>
-      ${renderSimpleMessages([
-        ...errors.map((message) => `【エラー】${message}`),
-        ...warnings.map((message) => `【注意】${message}`),
-        ...infos.map((message) => `【補足】${message}`)
-      ])}
+        <section class="pdf-section">
+          <h4>自由選択科目</h4>
+          ${renderPdfSelectedCourses(selectedIds)}
+        </section>
+
+        <section class="pdf-section">
+          <h4>確認事項</h4>
+          ${renderPdfMessages(errors, warnings, infos)}
+        </section>
+
+        <section class="pdf-signature-section">
+          <div>本人確認</div>
+          <div>保護者確認</div>
+          <div>担任確認</div>
+        </section>
+
+        <p class="pdf-footer-note">
+          ※この確認シートは検討用です。最終的な履修可否は正式な調査票、開講状況、時間割編成、担任・教科担当との確認に基づきます。
+        </p>
+      </article>
     `;
   }
 
+
+
+  function renderPdfRequiredCourses() {
+    if (!REQUIRED_COURSES || REQUIRED_COURSES.length === 0) {
+      return `<p class="pdf-empty">必修科目データが登録されていません。</p>`;
+    }
+
+    return `
+      <div class="pdf-required-list">
+        ${REQUIRED_COURSES.map((course) => `
+          <span>${escapeHtml(course.name)} ${course.credits}単位</span>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderPdfSelectedCourses(selectedIds) {
+    if (!selectedIds.length) {
+      return `<p class="pdf-empty">自由選択科目はまだ選択されていません。</p>`;
+    }
+
+    return `
+      <ul class="pdf-course-list">
+        ${selectedIds.map((id) => {
+          const course = getCourse(id);
+          if (!course) return "";
+
+          return `
+            <li class="pdf-course-row">
+              <span class="pdf-course-code">${course.code}</span>
+              <span class="pdf-course-name">${escapeHtml(course.name)}</span>
+              <span class="pdf-course-credit">${course.credits}単位</span>
+            </li>
+          `;
+        }).join("")}
+      </ul>
+    `;
+  }
+
+  function renderPdfMessages(errors, warnings, infos) {
+    const items = [];
+
+    errors.forEach((message) => items.push({ label: "エラー", text: message, type: "error" }));
+
+    const warningLimit = Math.max(0, 6 - items.length);
+    warnings.slice(0, warningLimit).forEach((message) => items.push({ label: "注意", text: message, type: "warning" }));
+
+    const infoLimit = Math.max(0, 6 - items.length);
+    infos.slice(0, infoLimit).forEach((message) => items.push({ label: "補足", text: message, type: "info" }));
+
+    const omitted = Math.max(0, errors.length + warnings.length + infos.length - items.length);
+
+    if (items.length === 0) {
+      return `<p class="pdf-empty">現在、特別な確認事項はありません。</p>`;
+    }
+
+    return `
+      <ul class="pdf-message-list">
+        ${items.map((item) => `
+          <li class="pdf-message-item pdf-message-item--${item.type}">
+            <strong>【${escapeHtml(item.label)}】</strong>${escapeHtml(item.text)}
+          </li>
+        `).join("")}
+        ${omitted > 0 ? `<li class="pdf-message-item">ほか${omitted}件の確認事項があります。画面上で確認してください。</li>` : ""}
+      </ul>
+    `;
+  }
 
   function renderSimpleRequiredCourseList() {
     if (!REQUIRED_COURSES || REQUIRED_COURSES.length === 0) {

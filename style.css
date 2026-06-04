@@ -1238,3 +1238,377 @@ a {
 .group-card[data-group-id="outside_english_inquiry"] .group-card__title {
   color: var(--color-primary-dark);
 }
+
+
+/* v7: PDF確認シート */
+.pdf-sheet {
+  background: #ffffff;
+  color: var(--color-text);
+}
+
+.pdf-sheet__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--color-text);
+}
+
+.pdf-sheet__label {
+  margin: 0 0 0.15rem;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.pdf-sheet h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.pdf-sheet__status {
+  flex: 0 0 auto;
+  min-width: 5.4rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.pdf-sheet__status.is-ok {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.pdf-sheet__status.is-error {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.pdf-meta-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 0 0 0.8rem;
+}
+
+.pdf-meta-grid div {
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-soft);
+}
+
+.pdf-meta-grid dt {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.pdf-meta-grid dd {
+  margin: 0.08rem 0 0;
+  font-weight: 900;
+}
+
+.pdf-section {
+  margin-top: 0.75rem;
+}
+
+.pdf-section h4 {
+  margin: 0 0 0.35rem;
+  padding-bottom: 0.18rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 1rem;
+}
+
+.pdf-required-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.pdf-required-list span,
+.pdf-course-row,
+.pdf-message-item {
+  padding: 0.34rem 0.42rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.45rem;
+  background: #ffffff;
+}
+
+.pdf-course-list,
+.pdf-message-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pdf-course-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.pdf-course-row {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr 3rem;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.pdf-course-code {
+  font-weight: 900;
+}
+
+.pdf-course-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.pdf-course-credit {
+  text-align: right;
+  font-weight: 800;
+}
+
+.pdf-message-list {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.pdf-message-item {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.pdf-message-item--error {
+  border-color: rgba(180, 35, 24, 0.35);
+}
+
+.pdf-message-item--warning {
+  border-color: rgba(181, 71, 8, 0.35);
+}
+
+.pdf-empty {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.pdf-signature-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+  margin-top: 0.85rem;
+}
+
+.pdf-signature-section div {
+  min-height: 2.8rem;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.45rem;
+  color: var(--color-muted);
+  font-weight: 800;
+}
+
+.pdf-footer-note {
+  margin: 0.6rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .pdf-meta-grid,
+  .pdf-required-list,
+  .pdf-course-list,
+  .pdf-signature-section {
+    grid-template-columns: 1fr;
+  }
+
+  .pdf-course-row {
+    grid-template-columns: 2.2rem 1fr auto;
+  }
+}
+
+/* v7: A4 1枚PDF保存向けの印刷設定 */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  html,
+  body {
+    width: 210mm;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    background: #ffffff !important;
+  }
+
+  body {
+    font-size: 9pt;
+    line-height: 1.22;
+  }
+
+  .site-header,
+  .mobile-anchor-nav,
+  .notice-card,
+  .page > .step-card:not(.print-area),
+  .site-footer,
+  .mobile-status,
+  .button-row,
+  .print-area .step-heading {
+    display: none !important;
+  }
+
+  .page {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-area {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+  }
+
+  .print-preview {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .pdf-sheet {
+    height: 281mm;
+    max-height: 281mm;
+    overflow: hidden;
+    color: #000000;
+  }
+
+  .pdf-sheet__header {
+    margin-bottom: 3.5mm;
+    padding-bottom: 2mm;
+    border-bottom: 1.2pt solid #000000;
+  }
+
+  .pdf-sheet__label {
+    color: #000000;
+    font-size: 7.5pt;
+  }
+
+  .pdf-sheet h3 {
+    font-size: 15pt;
+  }
+
+  .pdf-sheet__status {
+    border: 1pt solid #000000;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 9pt;
+  }
+
+  .pdf-meta-grid {
+    grid-template-columns: 2.2fr repeat(3, 1fr);
+    gap: 2mm;
+    margin-bottom: 3mm;
+  }
+
+  .pdf-meta-grid div,
+  .pdf-required-list span,
+  .pdf-course-row,
+  .pdf-message-item,
+  .pdf-signature-section div {
+    border: 0.6pt solid #777777;
+    border-radius: 0;
+    background: #ffffff !important;
+  }
+
+  .pdf-meta-grid div {
+    padding: 1.6mm;
+  }
+
+  .pdf-meta-grid dt {
+    color: #333333;
+    font-size: 7pt;
+  }
+
+  .pdf-meta-grid dd {
+    font-size: 9pt;
+  }
+
+  .pdf-section {
+    margin-top: 2.3mm;
+  }
+
+  .pdf-section h4 {
+    margin-bottom: 1.3mm;
+    padding-bottom: 0.6mm;
+    border-bottom: 0.8pt solid #777777;
+    font-size: 9.5pt;
+  }
+
+  .pdf-required-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5mm;
+  }
+
+  .pdf-required-list span {
+    padding: 1.1mm 1.3mm;
+  }
+
+  .pdf-course-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.4mm;
+  }
+
+  .pdf-course-row {
+    grid-template-columns: 8mm 1fr 12mm;
+    gap: 1.2mm;
+    padding: 1.05mm 1.3mm;
+    min-height: 5.2mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .pdf-course-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pdf-message-list {
+    gap: 1.2mm;
+  }
+
+  .pdf-message-item {
+    padding: 1.1mm 1.3mm;
+    font-size: 8pt;
+    line-height: 1.25;
+  }
+
+  .pdf-signature-section {
+    gap: 2mm;
+    margin-top: 3mm;
+  }
+
+  .pdf-signature-section div {
+    min-height: 11mm;
+    padding: 1.2mm;
+  }
+
+  .pdf-footer-note {
+    margin-top: 2mm;
+    color: #333333;
+    font-size: 7.2pt;
+    line-height: 1.25;
+  }
+}

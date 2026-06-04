@@ -1539,7 +1539,7 @@ const MODELS = {
           "kobun_alpha",
           "kobun_beta"
         ],
-        "note": "難関私大で古典が必要な場合は、古典演習αまたはβを検討する。"
+        "note": "難関私大で古典が必要な場合は、古典演習αまたはβを検討してください。古典演習α・βはいずれか一方のみ選択できます。"
       },
       {
         "id": "history_or_civics",
@@ -1574,7 +1574,41 @@ const MODELS = {
               "politics_economics"
             ]
           }
-        ]
+        ],
+        "note": "私立文系一般入試で使用する主要科目を選択してください。"
+      },
+      {
+        "id": "private_humanities_geo_civics_supplement",
+        "label": "私立文系の補助的任意選択：地理・公民",
+        "type": "single_set",
+        "required": false,
+        "options": [
+          {
+            "label": "地理探究α：共通テスト利用・教養目的",
+            "courseIds": [
+              "geo_alpha"
+            ]
+          },
+          {
+            "label": "公共演習＋倫理：共通テスト利用等",
+            "courseIds": [
+              "public_studies",
+              "ethics"
+            ]
+          }
+        ],
+        "note": "通常モデルの中核科目ではありません。共通テスト利用、併願方式、教養目的などで必要な場合にのみ検討してください。"
+      },
+      {
+        "id": "private_humanities_math_supplement",
+        "label": "私立文系の補助的任意選択：数学",
+        "type": "single",
+        "required": false,
+        "options": [
+          "math_ia",
+          "math_alpha"
+        ],
+        "note": "数学利用型・共通テスト利用型などで必要な場合にのみ検討してください。数学ⅠA演習・数学演習αはいずれか一方のみ選択できます。"
       }
     ],
     "lockedOut": [
@@ -1584,10 +1618,12 @@ const MODELS = {
       "math_delta"
     ],
     "warnings": [
-      "私立文系は大学・学部・方式により必要科目が大きく異なるため、募集要項の確認が必須。"
+      "私立文系は大学・学部・方式により必要科目が大きく異なるため、募集要項の確認が必須。",
+      "地理探究α、公共演習＋倫理、数学ⅠA演習、数学演習αは補助的任意選択です。必要性を確認して選択してください。"
     ],
     "selfStudy": []
   }
+
 };
 
 const RULES = {
