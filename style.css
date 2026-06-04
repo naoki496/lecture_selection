@@ -1171,3 +1171,27 @@ a {
     text-decoration: none;
   }
 }
+
+
+/* v3: 必修科目の表示 */
+.badge--required {
+  border-color: rgba(15, 54, 116, 0.22);
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.course-section + .course-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.course-section__title {
+  margin: 0 0 0.65rem;
+  font-size: 1rem;
+}
+
+.course-item--required .course-code {
+  background: #f1f5f9;
+  color: #0f172a;
+}

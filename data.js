@@ -31,6 +31,42 @@ const CONFIG = {
   ]
 };
 
+
+const REQUIRED_COURSES = [
+  {
+    id: "logical_japanese",
+    subject: "国語",
+    name: "論理国語",
+    credits: 3,
+    type: "必修科目",
+    note: "3年次必修科目。"
+  },
+  {
+    id: "physical_education_required",
+    subject: "保健体育",
+    name: "体育",
+    credits: 2,
+    type: "必修科目",
+    note: "3年次必修科目。"
+  },
+  {
+    id: "english_communication_iii",
+    subject: "英語",
+    name: "英語コミュニケーションⅢ",
+    credits: 3,
+    type: "必修科目",
+    note: "3年次必修科目。"
+  },
+  {
+    id: "logic_expression_iii",
+    subject: "英語",
+    name: "論理・表現Ⅲ",
+    credits: 2,
+    type: "必修科目",
+    note: "3年次必修科目。"
+  }
+];
+
 const SCHEDULES = [
   {
     id: "briefing",
@@ -1318,6 +1354,7 @@ const RULES = {
 if (typeof window !== "undefined") {
   window.COURSE_SELECTOR_DATA = {
     CONFIG,
+    REQUIRED_COURSES,
     SCHEDULES,
     PROFILES,
     COURSES,

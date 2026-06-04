@@ -23,6 +23,7 @@
 
   const {
     CONFIG,
+    REQUIRED_COURSES = [],
     PROFILES,
     COURSES,
     EXCLUSIVE_GROUPS,
@@ -206,8 +207,11 @@
       <h3 class="model-title">${escapeHtml(model.name)}</h3>
       <p class="model-description">${escapeHtml(profile ? profile.description : "")}</p>
 
-      <h4>原則必須・固定科目</h4>
-      ${renderBadgeRow(requiredCourses, "badge--locked", "必須")}
+      <h4>3年次必修科目</h4>
+      ${renderBadgeRow(REQUIRED_COURSES, "badge--required", "必修")}
+
+      <h4>自由選択内の原則必須・固定科目</h4>
+      ${renderBadgeRow(requiredCourses, "badge--locked", "固定")}
 
       <h4>推奨科目</h4>
       ${recommendedCourses.length
@@ -559,7 +563,7 @@
       elements.unitSummary.className = "unit-summary empty-state";
       elements.unitSummary.textContent = "単位数はここに表示されます。";
       elements.selectedCourses.className = "selected-courses empty-state";
-      elements.selectedCourses.textContent = "選択科目はここに表示されます。";
+      elements.selectedCourses.textContent = "必修科目と自由選択科目はここに表示されます。";
       renderMessages([], [], []);
       renderPrintPreview();
       updateMobileStatus(null, 0, { errors: [], warnings: [], infos: [] });
@@ -595,7 +599,16 @@
     `;
 
     elements.selectedCourses.className = "selected-courses";
-    elements.selectedCourses.innerHTML = renderSelectedCourseList(selectedIds);
+    elements.selectedCourses.innerHTML = `
+      <div class="course-section">
+        <h3 class="course-section__title">必修科目（10単位）</h3>
+        ${renderRequiredCourseList()}
+      </div>
+      <div class="course-section">
+        <h3 class="course-section__title">自由選択科目（${electiveCredits}単位）</h3>
+        ${renderSelectedCourseList(selectedIds)}
+      </div>
+    `;
 
     const messages = validateSelection(selectedIds);
     renderMessages(messages.errors, messages.warnings, messages.infos);
@@ -625,6 +638,28 @@
             </li>
           `;
         }).join("")}
+      </ul>
+    `;
+  }
+
+
+  function renderRequiredCourseList() {
+    if (!REQUIRED_COURSES || REQUIRED_COURSES.length === 0) {
+      return `<div class="empty-state">必修科目データが登録されていません。</div>`;
+    }
+
+    return `
+      <ul class="course-list required-course-list">
+        ${REQUIRED_COURSES.map((course) => `
+          <li class="course-item course-item--required">
+            <span class="course-code">必</span>
+            <span>
+              <span class="course-name">${escapeHtml(course.name)}</span>
+              <span class="course-subject">${escapeHtml(course.subject)}／${escapeHtml(course.type)}</span>
+            </span>
+            <span class="course-credits">${course.credits}単位</span>
+          </li>
+        `).join("")}
       </ul>
     `;
   }
@@ -884,7 +919,10 @@
         <dd>${total}単位</dd>
       </dl>
 
-      <h4>選択科目</h4>
+      <h4>必修科目</h4>
+      ${renderSimpleRequiredCourseList()}
+
+      <h4>自由選択科目</h4>
       ${renderSimpleCourseList(selectedIds)}
 
       <h4>確認事項</h4>
@@ -893,6 +931,19 @@
         ...warnings.map((message) => `【注意】${message}`),
         ...infos.map((message) => `【補足】${message}`)
       ])}
+    `;
+  }
+
+
+  function renderSimpleRequiredCourseList() {
+    if (!REQUIRED_COURSES || REQUIRED_COURSES.length === 0) {
+      return `<p>必修科目データが登録されていません。</p>`;
+    }
+
+    return `
+      <ul>
+        ${REQUIRED_COURSES.map((course) => `<li>${escapeHtml(course.name)}（${course.credits}単位／${escapeHtml(course.subject)}）</li>`).join("")}
+      </ul>
     `;
   }
 
