@@ -128,6 +128,7 @@
           <span class="profile-card__category">${escapeHtml(profile.category)}</span>
           <span class="profile-card__title">${escapeHtml(profile.name)}</span>
           <p class="profile-card__description">${escapeHtml(profile.description)}</p>
+          ${profile.notice ? `<p class="profile-card__notice">${escapeHtml(profile.notice)}</p>` : ""}
         </button>
       `;
     }).join("");
@@ -213,7 +214,7 @@
       <h4>自由選択内の原則必須・固定科目</h4>
       ${renderBadgeRow(requiredCourses, "badge--locked", "固定")}
 
-      <h4>推奨科目</h4>
+      <h4>モデル上の推奨科目です。</h4>
       ${recommendedCourses.length
         ? renderBadgeRow(recommendedCourses, "badge--recommended", "推奨")
         : `<p class="empty-state">このモデルに自動設定された推奨科目はありません。</p>`}
@@ -241,6 +242,18 @@
     `;
   }
 
+
+  function getOutsideOptionalGroup() {
+    return {
+      id: "outside_optional",
+      label: "モデル外の任意選択",
+      type: "single",
+      required: false,
+      options: ["pe", "music", "art", "calligraphy"],
+      note: "これらは履修モデル上の中核科目ではありません。必要単位数、受験科目、時間割上の制約を確認したうえで選択してください。"
+    };
+  }
+
   function renderCustomOptions() {
     const model = getCurrentModel();
 
@@ -261,6 +274,8 @@
       sections.push(renderGroup(group));
     });
 
+    sections.push(renderGroup(getOutsideOptionalGroup()));
+
     if (sections.length === 0) {
       elements.customOptions.innerHTML = `<div class="empty-state">このモデルで変更可能な科目はありません。</div>`;
       return;
@@ -277,8 +292,8 @@
       <section class="group-card" data-group-type="recommended">
         <div class="group-card__header">
           <div>
-            <h3 class="group-card__title">推奨科目</h3>
-            <p class="group-card__note">モデル上の推奨科目です。必要に応じて外すこともできます。</p>
+            <h3 class="group-card__title">モデル上の推奨科目です。</h3>
+            <p class="group-card__note">モデル上の推奨科目です。</p>
           </div>
         </div>
 
@@ -297,7 +312,12 @@
                   <span>${course.credits}単位</span>
                   <span>講座コード ${course.code}</span>
                 </span>
-                <span class="option-item__description">${escapeHtml(course.description)}</span>
+                <span class="option-item__description">
+                  ${state.profileId === "science_tokyo_kyoto" && course.id === "kobun_gamma"
+                    ? `<span class="strong-recommendation-warning">【注意！】重要科目です。外すと自学での対策が必須になります。受講を強く推奨します。</span><br>`
+                    : ""}
+                  ${escapeHtml(course.description)}
+                </span>
               </span>
             </label>
           `).join("")}
@@ -755,11 +775,10 @@
       errors.push("日本史探究演習bは、日本史探究演習aとセットでなければ選択できません。");
     }
 
-    const worldAWithoutBAllowed = worldA && !worldB && japanA && japanB;
     const japanAWithoutBAllowed = japanA && !japanB && worldA && worldB;
 
-    if (worldA && !worldB && !worldAWithoutBAllowed) {
-      errors.push("世界史探究演習aを選択する場合、原則として世界史探究演習bも選択してください。特例の場合は日本史6単位＋世界史4単位の形にしてください。");
+    if (worldA && !worldB) {
+      errors.push("世界史探究演習aを選択する場合、世界史探究演習bも選択してください。日本史6単位＋世界史4単位のパターンは設定されていません。");
     }
 
     if (japanA && !japanB && !japanAWithoutBAllowed) {

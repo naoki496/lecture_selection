@@ -1195,3 +1195,34 @@ a {
   background: #f1f5f9;
   color: #0f172a;
 }
+
+
+/* v4: 東大・京大理系の古典演習γに関する強い推奨表示 */
+.strong-recommendation-warning {
+  color: var(--color-error);
+  font-weight: 900;
+}
+
+
+/* v5: 補助モデル・モデル外任意選択 */
+.profile-card__notice {
+  margin: 0.65rem 0 0;
+  padding: 0.5rem 0.58rem;
+  border: 1px solid rgba(180, 71, 8, 0.24);
+  border-radius: 10px;
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.group-card[data-group-id="outside_optional"] {
+  border-style: dashed;
+  background: #fffdf7;
+}
+
+.group-card[data-group-id="outside_optional"] .group-card__title::before {
+  content: "任意：";
+  color: var(--color-warning);
+}
