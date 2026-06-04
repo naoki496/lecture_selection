@@ -1226,3 +1226,15 @@ a {
   content: "任意：";
   color: var(--color-warning);
 }
+
+
+/* v6: モデル外任意選択枠 */
+.group-card[data-group-id="outside_pe_arts"],
+.group-card[data-group-id="outside_english_inquiry"] {
+  border-style: dashed;
+}
+
+.group-card[data-group-id="outside_pe_arts"] .group-card__title,
+.group-card[data-group-id="outside_english_inquiry"] .group-card__title {
+  color: var(--color-primary-dark);
+}

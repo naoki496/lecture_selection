@@ -243,14 +243,25 @@
   }
 
 
-  function getOutsideOptionalGroup() {
+  function getOutsidePeArtsGroup() {
     return {
-      id: "outside_optional",
-      label: "モデル外の任意選択",
+      id: "outside_pe_arts",
+      label: "モデル外の任意選択①：体育・芸術",
       type: "single",
       required: false,
       options: ["pe", "music", "art", "calligraphy"],
-      note: "これらは履修モデル上の中核科目ではありません。必要単位数、受験科目、時間割上の制約を確認したうえで選択してください。"
+      note: "これらは履修モデル上の中核科目ではありません。必要単位数、受験科目、時間割上の制約を確認したうえで選択してください。選択体育・選択音楽・選択美術・選択書道はいずれか1科目のみ選択できます。"
+    };
+  }
+
+  function getOutsideEnglishInquiryGroup() {
+    return {
+      id: "outside_english_inquiry",
+      label: "モデル外の任意選択②：英語・探究",
+      type: "choose_exactly",
+      required: false,
+      options: ["english_inquiry", "inquiry"],
+      note: "英語探究演習・課題探究演習は、必要に応じて追加検討するモデル外の任意選択です。英語探究演習は数学演習βと同時選択不可、課題探究演習は古典演習γと同時選択不可です。課題探究演習は事前相談が必要です。"
     };
   }
 
@@ -274,7 +285,8 @@
       sections.push(renderGroup(group));
     });
 
-    sections.push(renderGroup(getOutsideOptionalGroup()));
+    sections.push(renderGroup(getOutsidePeArtsGroup()));
+    sections.push(renderGroup(getOutsideEnglishInquiryGroup()));
 
     if (sections.length === 0) {
       elements.customOptions.innerHTML = `<div class="empty-state">このモデルで変更可能な科目はありません。</div>`;
