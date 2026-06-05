@@ -1795,3 +1795,216 @@ a {
     margin-top: 0.85rem;
   }
 }
+
+
+/* v10: PDF保存時の右端見切れ修正・淡色PDF化 */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-sizing: border-box !important;
+  }
+
+  html,
+  body {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  .page,
+  .print-area,
+  .print-preview,
+  .pdf-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    overflow: visible !important;
+  }
+
+  .pdf-sheet {
+    height: auto !important;
+    max-height: none !important;
+    padding: 0 !important;
+    color: #102033 !important;
+    background: #ffffff !important;
+  }
+
+  .pdf-sheet__header {
+    margin-bottom: 3mm !important;
+    padding: 2.2mm 3mm !important;
+    border: 0 !important;
+    border-radius: 2mm !important;
+    background: linear-gradient(135deg, #e6f6fb 0%, #f1fbfd 100%) !important;
+    color: #0b4f71 !important;
+  }
+
+  .pdf-sheet__label {
+    color: #0b4f71 !important;
+    font-weight: 800 !important;
+  }
+
+  .pdf-sheet h3 {
+    color: #08324a !important;
+  }
+
+  .pdf-sheet__status {
+    border: 0.7pt solid #0f6b8f !important;
+    background: #ffffff !important;
+    color: #0b4f71 !important;
+  }
+
+  .pdf-sheet__status.is-ok {
+    border-color: #047857 !important;
+    background: #ecfdf3 !important;
+    color: #047857 !important;
+  }
+
+  .pdf-sheet__status.is-error {
+    border-color: #b42318 !important;
+    background: #fff1f0 !important;
+    color: #b42318 !important;
+  }
+
+  .pdf-meta-grid {
+    grid-template-columns: 1.75fr repeat(3, 0.75fr) !important;
+    gap: 1.6mm !important;
+    margin-bottom: 2.4mm !important;
+  }
+
+  .pdf-meta-grid div {
+    padding: 1.55mm 1.8mm !important;
+    border: 0.6pt solid #b7c9d9 !important;
+    border-radius: 1.2mm !important;
+    background: #f3f9fc !important;
+  }
+
+  .pdf-meta-grid dt {
+    color: #486177 !important;
+  }
+
+  .pdf-meta-grid dd {
+    color: #102033 !important;
+  }
+
+  .pdf-section {
+    margin-top: 2.1mm !important;
+  }
+
+  .pdf-section h4 {
+    margin-bottom: 1.2mm !important;
+    padding: 0.9mm 1.4mm !important;
+    border: 0 !important;
+    border-left: 3mm solid #0f6b8f !important;
+    background: #eef7fb !important;
+    color: #08324a !important;
+    font-size: 9.3pt !important;
+  }
+
+  .pdf-required-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 1.2mm !important;
+  }
+
+  .pdf-required-list span {
+    min-width: 0 !important;
+    padding: 1.15mm 1.3mm !important;
+    border: 0.6pt solid #b7c9d9 !important;
+    border-radius: 1mm !important;
+    background: #f8fbff !important;
+    color: #102033 !important;
+  }
+
+  .pdf-course-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1.25mm !important;
+    width: 100% !important;
+  }
+
+  .pdf-course-row {
+    grid-template-columns: 7.5mm minmax(0, 1fr) 11.5mm !important;
+    gap: 1.1mm !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    padding: 1.0mm 1.2mm !important;
+    border: 0.6pt solid #b7c9d9 !important;
+    border-radius: 1mm !important;
+    background: #ffffff !important;
+    color: #102033 !important;
+  }
+
+  .pdf-course-code {
+    color: #0b4f71 !important;
+    font-weight: 900 !important;
+  }
+
+  .pdf-course-name {
+    min-width: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .pdf-course-credit {
+    min-width: 0 !important;
+    color: #102033 !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+  }
+
+  .pdf-message-list {
+    gap: 1mm !important;
+  }
+
+  .pdf-message-item {
+    padding: 1.0mm 1.3mm !important;
+    border-radius: 1mm !important;
+    background: #ffffff !important;
+    color: #102033 !important;
+  }
+
+  .pdf-message-item--error {
+    border-color: #f0a3a0 !important;
+    background: #fff7f6 !important;
+  }
+
+  .pdf-message-item--warning {
+    border-color: #f4c27a !important;
+    background: #fff8eb !important;
+  }
+
+  .pdf-message-item--info {
+    border-color: #9ac7ea !important;
+    background: #f0f8ff !important;
+  }
+
+  .pdf-signature-section {
+    gap: 1.6mm !important;
+    margin-top: 2.6mm !important;
+  }
+
+  .pdf-signature-section div {
+    min-height: 10mm !important;
+    padding: 1.2mm 1.4mm !important;
+    border: 0.6pt solid #9fb3c8 !important;
+    border-radius: 1mm !important;
+    background: #fbfdff !important;
+    color: #334155 !important;
+  }
+
+  .pdf-footer-note {
+    margin-top: 1.6mm !important;
+    color: #475569 !important;
+    font-size: 7pt !important;
+  }
+}
