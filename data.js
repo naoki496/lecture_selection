@@ -1359,7 +1359,6 @@ window.COURSE_SELECTOR_DATA = {
         "kobun_alpha"
       ],
       "recommended": [
-        "math_alpha",
         "english_reading"
       ],
       "selectableGroups": [
